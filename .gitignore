@@ -1,0 +1,5 @@
+/dist/
+*.sublime-workspace
+/makeenv
+.*.swp
+/.cabal-sandbox
