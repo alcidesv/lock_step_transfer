@@ -4,6 +4,7 @@ import SecondTransfer(
     , DataAndConclusion
     , tlsServeWithALPN
     , http2Attendant
+    , enableConsoleLogging
     )
 import SecondTransfer.Http2(
       makeSessionsContext
@@ -23,9 +24,9 @@ saysHello who_speaks commpoint repeats =
     if repeats > 0 
       then do 
           -- Not the best way to go about it 
-          liftIO $ takeMVar commpoint 
+          --liftIO $ takeMVar commpoint 
           yield . pack . show $ who_speaks 
-          liftIO $ putMVar commpoint ComPoint
+          --liftIO $ putMVar commpoint ComPoint
           saysHello who_speaks commpoint (repeats-1)
       else
           return []
@@ -51,6 +52,7 @@ interlockedWorker counters mvar _ = do
 -- the developement directory.
 main :: IO ()
 main = do 
+    enableConsoleLogging
     sessions_context <- makeSessionsContext defaultSessionsConfig
     counters <- newMVar 0
     can_talk <- newEmptyMVar
@@ -59,7 +61,7 @@ main = do
         						sessions_context 
         						$ interlockedWorker counters can_talk
     tlsServeWithALPN
-        "servercert.pem"   -- Server certificate
+        "cert.pem"   -- Server certificate
         "privkey.pem"      -- Certificate private key
         "127.0.0.1"                      -- On which interface to bind
         [
@@ -67,4 +69,4 @@ main = do
             ("h2",    http2_attendant)   -- they may be slightly different, but for this 
                                          -- test it doesn't matter.
         ]
-        8000 
+        8443 
