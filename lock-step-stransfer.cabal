@@ -58,10 +58,10 @@ executable lock-step-stransfer
   
   -- Other library packages from which modules are imported.
   build-depends:       base >=4.7 && <4.8,
-                       second-transfer >= 0.2,
+                       second-transfer >= 0.3,
                        conduit >= 1.2.4,
                        bytestring >= 0.10,
-                       transformers >= 0.4.3
+                       transformers
   
   -- Directories containing source files.
   hs-source-dirs:      hs-src
