@@ -26,11 +26,11 @@ saysHello who_speaks commpoint repeats =
           -- The following if puts the two streams in a lock-step. 
           -- That's probably not much of an ordeal, given that there
           -- are independent control threads pulling data, but anyways...
-          -- if (who_speaks `rem` 3) /= 0 then do
-          --   liftIO $ takeMVar commpoint 
-          --   return ()
-          -- else 
-          --   liftIO $ putMVar commpoint ComPoint
+          if (who_speaks `rem` 3) /= 0 then do
+            liftIO $ takeMVar commpoint 
+            return ()
+          else 
+            liftIO $ putMVar commpoint ComPoint
           yield . pack . ( (++) "\nlong line and block with ordinal number ") . show $ who_speaks 
           saysHello who_speaks commpoint (repeats-1)
       else
